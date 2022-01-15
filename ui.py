@@ -38,7 +38,7 @@ def update(trv: ttk.Treeview, is_terminate: Event):
         trv.delete(*trv.get_children())
         for i in rows:
             trv.insert('','end',values=i)
-        time.sleep(30)
+        time.sleep(60)
 
 def table():
     root = tk.Tk()
@@ -120,7 +120,7 @@ def table():
 
     def writeTimeConfig():
         while read_data_file(APP_DATA_ID) == 'FLAG':
-            time.sleep(5)
+            time.sleep(10)
         else:
             overwrite_cloud_file(APP_DATA_ID,'FLAG')
             temp = get_table_value(trv)
@@ -128,10 +128,17 @@ def table():
             overwrite_cloud_file(APP_DATA_ID,'')
 
     def updateTimeFrame():
-        print()
+        if trv.focus() != '':
+            if t1.get() != '' and t2.get() != '':
+                selected_item = trv.selection()[0]
+                trv.delete(selected_item)
+                trv.insert('','end',values=(t1.get(),t2.get(),int(t3.get()) if t3.get() != '' else '',int(t4.get()) if t4.get() != '' else '',int(t5.get()) if t5.get() != '' else ''))
+                writeTimeConfig()
 
     def addTimeFrame():
-        print()
+        if t1.get() != '' and t2.get() != '':
+            trv.insert('','end',values=(t1.get(),t2.get(),int(t3.get()) if t3.get() != '' else '',int(t4.get()) if t4.get() != '' else '',int(t5.get()) if t5.get() != '' else ''))
+            writeTimeConfig()
 
     def delTimeFrame():
         selected_item = trv.selection()[0]
